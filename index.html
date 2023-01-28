@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body onload="trendsFunction();realtimeTrendsFunction()">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <table style="align:center; width:auto; height:400px; overflow-y: auto;" class="table table-hover table-responsive table-sm">
+          <thead><tr><th scope="col">#</th><th scope="col">Trend Aramalar</th></tr></thead>
+          <tbody id="trendsContent"></tbody>
+        </table>
+      </div>
+      <div class="col-sm-6">
+          <table style="align:center; width:auto; height:400px; overflow-y: auto;" class="table table-hover table-responsive table-sm">
+            <thead><tr><th scope="col">#</th><th scope="col">Realtime Trend Aramalar</th></tr></thead>
+            <tbody id="realtimeTrendsContent"></tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+
+    function trendsFunction(){
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+          var response = JSON.parse(this.responseText);
+          var out = "";
+
+          Object.entries(response).forEach((entry) =>{
+            const [key, value] = entry;
+            out += "<tr><th scope=\"row\">"+ `${parseInt(key) + 1}` + "</th><td>" + `${value}` + "</td></tr>";
+          });
+          out += "</tbody";
+          document.getElementById("trendsContent").innerHTML = out;
+        }
+      };
+      xhttp.open("GET", "http://127.0.0.1:5000/trends", true);
+      xhttp.send(null);
+    }
+
+    function realtimeTrendsFunction(){
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+          var response = JSON.parse(this.responseText);
+          var out = "";
+
+          Object.entries(response).forEach((entry) =>{
+            const [key, value] = entry;
+            out += "<tr><th scope=\"row\">"+ `${parseInt(key) + 1}` + "</th><td>" + `${value}` + "</td></tr>";
+          });
+          out += "</tbody";
+          document.getElementById("realtimeTrendsContent").innerHTML = out;
+        }
+      };
+      xhttp.open("GET", "http://127.0.0.1:5000/realtime_trends", true);
+      xhttp.send();
+    }
+  </script>
+</body>
+</html>
