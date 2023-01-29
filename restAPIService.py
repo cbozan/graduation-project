@@ -11,6 +11,7 @@ from flask import Flask, request
 from flask_restful import Api, Resource
 import pandas as pd
 import json
+import mySparkSession
 
 app = Flask(__name__)
 api = Api(app)
@@ -27,11 +28,11 @@ class Trends(Resource):
         pytrends = TrendReq(hl=default_parameters["hl"], tz=default_parameters["tz"])
         data = pytrends.trending_searches(pn=default_parameters["pn"])
         data.rename(columns={0:'text'}, inplace=True)
-
+        data = mySparkSession.sess(data)
         # Parse DataFrame (data) - data'yı stringe dönüştür
         dt = '{'
         for data_id in data.index:
-            dt += '"{}": "{}",'.format(data_id, data.loc[data_id][0])
+            dt += '"{}": "{}",'.format(data_id, data.loc[data_id][0] + " - " + str(data.loc[data_id][1]))
         dt = dt[:-1] + '}'
 
         return json.loads(dt), 200
