@@ -6,3 +6,11 @@ Graduation project categorizes popular search phrases using Python and Spark and
 
 ## Categorization of trending searches
 ![image](https://user-images.githubusercontent.com/71611710/215490741-004d48c0-c920-4362-88be-8d837ac22be7.png)
+
+## Run
+``` 
+python restAPIService.py
+```
+```
+index.html
+```
